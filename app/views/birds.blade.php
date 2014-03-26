@@ -2,22 +2,33 @@
 
 @section('content')
     <script type="text/javascript">
-    	$("#sound").sound({swf: url});
-		$("#sound").load(url);
-		$("#sound").play();
-		$("#sound").pause();
-		$("#sound").stop();
-		$("#sound").volume(0-100);		
+    $(document).ready(function() {    
+		$( "#target" ).click(function() {
+		  alert( "Handler for .click() called." );
+		});	
+	});	
 	</script>
-    @foreach($birds as $bird)
-    <script type="text/javascript">
-    	$('#{{$bird->id}}').mouseover(function() {
-		   $("#sound").play('{{$bird->sound}}');
+
+<table class="TFtable">
+	@foreach($birds as $bird)
+	<tr>
+		<td>	
+			<div id = "{{$bird->id}}"><img src="{{ $bird->image }}" width = "100px" alt="some_text"></div>
+	    </td>
+	    <td>{{ $bird->name }}</td>
+	    <td>{{ $bird->latinname }}</td>
+	    <td>{{ $bird->description }}</td>
+    </tr>
+    
+ 	<script type="text/javascript">
+		$(function(){
+			 var birdaudio = document.createElement('audio');
+	    	 birdaudio.setAttribute('src', '{{$bird->sound}}');
+			 $('#{{$bird->id}}').mouseenter(function(){ birdaudio.play(); });
+			 $('#{{$bird->id}}').mouseleave(function(){ birdaudio.pause(); });
 		});
-	</script>
-	<div id = "{{$bird->id}}">
-    	<img src="{{ $bird->image }}" alt="some_text">
-        <p>{{ $bird->latinname }}</p>
-    </div>    
+		$( "tr:odd" ).css( "background-color", "lightblue" );
+	</script>    
     @endforeach
+    </table>
 @stop
